@@ -18,7 +18,6 @@ TOKEN = '206126857:AAH-E77120sBUc-929dHM-dvkfRdPu_RJCA'
 
 BASE_URL = 'https://api.telegram.org/bot' + TOKEN + '/'
 
-modmsg = ""
 
 # ================================
 
@@ -64,6 +63,8 @@ class SetWebhookHandler(webapp2.RequestHandler):
 
 
 class WebhookHandler(webapp2.RequestHandler):
+    modmsg = ""
+
     def post(self):
         urlfetch.set_default_fetch_deadline(60)
         body = json.loads(self.request.body)
@@ -89,6 +90,8 @@ class WebhookHandler(webapp2.RequestHandler):
 
         def reply(msg=None, img=None):
             if msg:
+                # Actually, we can do this
+                msg = msg + modmsg
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
                     'chat_id': str(chat_id),
                     'text': msg.encode('utf-8'),
@@ -106,10 +109,10 @@ class WebhookHandler(webapp2.RequestHandler):
             else:
                 logging.error('no msg or img specified')
                 resp = None
-        
+
             logging.info('send response:')
             logging.info(resp)
-            
+
         def replynomd(msg=None, img=None):
             if msg:
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
@@ -148,59 +151,59 @@ class WebhookHandler(webapp2.RequestHandler):
                 img.save(output, 'JPEG')
                 reply(img=output.getvalue())
             elif text == '/modmsg enable':
-                global modmsg
                 modmsg = "\n\n_I am a bot, and this action was performed automatically. Please contact the moderators of this subreddit if you have any questions or concerns._"
                 reply("Mod message enabled")
             elif text == '/modmsg disable':
-                global modmsg
                 modmsg = ""
                 reply("Mod message disabled")
 
         if getEnabled(chat_id):
-            
+
             # Edit logic after this
-            
-            if "ayy" in text.lower().replace(" ", "").replace("\n", "") and not "ayylmao" in text.lower().replace(" ", "").replace("\n", ""):
-                 reply('lmao' + modmsg)
-            if "awoo" in text.lower().replace(" ", "").replace("\n", "") and not "don'tawoo" in text.lower().replace(" ", "").replace("\n", ""):
-                reply(img=urllib2.urlopen('http://s3.amazonaws.com/cdn.roosterteeth.com/uploads/images/5ee99c55-7448-46ec-b93b-b413265f5c28/md/1537338-1453704069550-image.jpg').read() + modmsg)
-            if "xd" in text.lower():
-                reply(img=urllib2.urlopen('https://pbs.twimg.com/media/ClE02SzVYAIq4gN.jpg').read() + modmsg)
-            if "uwu" in text.lower().replace(" ", "").replace("\n", ""):
-                reply(img=urllib2.urlopen('https://furnation.com/public/album_photo/0b/73/06/6669e_ac4e.jpg').read() + modmsg)
-            if "keksimus" in text.lower() and not "keksimus maximus" in text.lower():
-                reply("maximus" + modmsg)
-            if "tbh fam" in text.lower():
-                reply(u'\U0001F602\U0001F44C' + modmsg)
-            if "bad automod" in text.lower() or "fuck you automod" in text.lower() or "fuck u automod" in text.lower():
-                reply("u fukin wot m8, i'll rek you on wii party" + modmsg)
-            if "morto" in text.lower():
-                reply("rip" + modmsg)
-            if text.lower() == "rip":
-                reply(":c" + modmsg)
-            if "nooo" in text.lower():
-                reply(img=urllib2.urlopen('http://i.imgur.com/ASiQpMU.jpg').read() + modmsg)
-            if "fixed" in text.lower().replace(" ", "").replace("\n", "") or "fixato" in text.lower().replace(" ", "").replace("\n", "") or "fix'd" in text.lower().replace(" ", "").replace("\n", ""):
-                replynomd("https://youtu.be/_1d_yAFLn1c?t=2m40s" + modmsg)
-            if "afamok" in text.lower():
-                reply("Mammt" + modmsg)
-            if "succ" in text.lower().replace(" ", "").replace("\n", "") or "pusi" in text.lower().replace(" ", "").replace("\n", "") or "pussy" in text.lower().replace(" ", "").replace("\n", ""):
-                replynomd(img=urllib2.urlopen('http://static.deathandtaxesmag.com/uploads/2014/05/pussy.png').read() + modmsg)
-            if "NANO" in text:
-                replynomd('http://ci.memecdn.com/477/6742477.gif' + modmsg)
-            if "aya" in text.lower().replace(" ", "").replace("\n", "") or "famale" in text.lower().replace(" ", "").replace("\n", ""):
-                replynomd('http://i3.asn.im/Nichijou-_tcu1.gif' + modmsg)
-            if "bestemmio" in text.lower():
-                replynomd('http://i840.photobucket.com/albums/zz324/MikeyzDragon/Hakase/hakasepopcat.gif' + modmsg)
-            if "dormo" in text.lower() or "nott" in text.lower():
-                replynomd("Nott" + modmsg)
-            if text.lower() == "il cazzo" or text.lower() == "le palle":
-                reply("di zia Vittoria" + modmsg)
-            if "r/" in text.lower() and not " r/" in text.lower():
-                reply("http://reddit.com/" + text + modmsg)
-            if text.lower() == "oh cazzo":
-                reply("Un debian" + modmsg)
-            
+
+            text = text.lower()
+
+            if "ayy" in text.replace(" ", "").replace("\n", "") and not "ayylmao" in text.replace(" ", "").replace("\n", ""):
+                 reply('lmao')
+            if "awoo" in text.replace(" ", "").replace("\n", "") and not "don'tawoo" in text.replace(" ", "").replace("\n", ""):
+                reply(img=urllib2.urlopen('http://s3.amazonaws.com/cdn.roosterteeth.com/uploads/images/5ee99c55-7448-46ec-b93b-b413265f5c28/md/1537338-1453704069550-image.jpg').read())
+            if "xd" in text:
+                reply(img=urllib2.urlopen('https://pbs.twimg.com/media/ClE02SzVYAIq4gN.jpg').read())
+            if "uwu" in text.replace(" ", "").replace("\n", ""):
+                reply(img=urllib2.urlopen('https://furnation.com/public/album_photo/0b/73/06/6669e_ac4e.jpg').read())
+            if "keksimus" in text and not "keksimus maximus" in text:
+                reply("maximus")
+            if "tbh fam" in text:
+                reply(u'\U0001F602\U0001F44C')
+            if "bad automod" in text or "fuck you automod" in text or "fuck u automod" in text:
+                reply("u fukin wot m8, i'll rek you on wii party")
+            if "morto" in text:
+                reply("rip")
+            if text == "rip":
+                reply(":c")
+            if "nooo" in text:
+                reply(img=urllib2.urlopen('http://i.imgur.com/ASiQpMU.jpg').read())
+            if "fixed" in text.replace(" ", "").replace("\n", "") or "fixato" in text.replace(" ", "").replace("\n", "") or "fix'd" in text.replace(" ", "").replace("\n", ""):
+                replynomd("https://youtu.be/_1d_yAFLn1c?t=2m40s")
+            if "afamok" in text:
+                reply("Mammt")
+            if "succ" in text.replace(" ", "").replace("\n", "") or "pusi" in text.replace(" ", "").replace("\n", "") or "pussy" in text.replace(" ", "").replace("\n", ""):
+                replynomd(img=urllib2.urlopen('http://static.deathandtaxesmag.com/uploads/2014/05/pussy.png').read())
+            if "NANONANONANO" in text:
+                replynomd('http://ci.memecdn.com/477/6742477.gif')
+            if "aya" in text.replace(" ", "").replace("\n", "") or "famale" in text.replace(" ", "").replace("\n", ""):
+                replynomd('http://i3.asn.im/Nichijou-_tcu1.gif')
+            if "bestemmio" in text:
+                replynomd('http://i840.photobucket.com/albums/zz324/MikeyzDragon/Hakase/hakasepopcat.gif')
+            if "dormo" in text or "nott" in text:
+                replynomd("Nott")
+            if text == "il cazzo" or text == "le palle":
+                reply("di zia Vittoria")
+            if "r/" in text and not " r/" in text:
+                reply("http://reddit.com/" + text)
+            if text == "oh cazzo":
+                reply("Un debian")
+
 # Don't go any further
 
 app = webapp2.WSGIApplication([
