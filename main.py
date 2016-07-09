@@ -200,6 +200,8 @@ class WebhookHandler(webapp2.RequestHandler):
                 reply("http://reddit.com/" + text + modmsg)
             if text.lower() == "oh cazzo":
                 reply("Un debian" + modmsg)
+            if "napol" in text.lower():
+                reply("SFACCIMM")
             
 # Don't go any further
 
