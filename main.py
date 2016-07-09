@@ -18,6 +18,7 @@ TOKEN = '206126857:AAH-E77120sBUc-929dHM-dvkfRdPu_RJCA'
 
 BASE_URL = 'https://api.telegram.org/bot' + TOKEN + '/'
 
+modmsg = ""
 
 # ================================
 
@@ -63,7 +64,6 @@ class SetWebhookHandler(webapp2.RequestHandler):
 
 
 class WebhookHandler(webapp2.RequestHandler):
-    modmsg = ""
 
     def post(self):
         urlfetch.set_default_fetch_deadline(60)
@@ -91,6 +91,7 @@ class WebhookHandler(webapp2.RequestHandler):
         def reply(msg=None, img=None):
             if msg:
                 # Actually, we can do this
+                global modmsg
                 msg = msg + modmsg
                 resp = urllib2.urlopen(BASE_URL + 'sendMessage', urllib.urlencode({
                     'chat_id': str(chat_id),
@@ -151,9 +152,11 @@ class WebhookHandler(webapp2.RequestHandler):
                 img.save(output, 'JPEG')
                 reply(img=output.getvalue())
             elif text == '/modmsg enable':
+                global modmsg
                 modmsg = "\n\n_I am a bot, and this action was performed automatically. Please contact the moderators of this subreddit if you have any questions or concerns._"
                 reply("Mod message enabled")
             elif text == '/modmsg disable':
+                global modmsg
                 modmsg = ""
                 reply("Mod message disabled")
 
