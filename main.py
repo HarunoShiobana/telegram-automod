@@ -186,7 +186,7 @@ class WebhookHandler(webapp2.RequestHandler):
                 reply("Mammt" + modmsg)
             if "succ" in text.lower().replace(" ", "").replace("\n", "") or "pusi" in text.lower().replace(" ", "").replace("\n", "") or "pussy" in text.lower().replace(" ", "").replace("\n", ""):
                 replynomd(img=urllib2.urlopen('http://static.deathandtaxesmag.com/uploads/2014/05/pussy.png').read() + modmsg)
-            if "NANONANONANO" in text:
+            if "NANO" in text:
                 replynomd('http://ci.memecdn.com/477/6742477.gif' + modmsg)
             if "aya" in text.lower().replace(" ", "").replace("\n", "") or "famale" in text.lower().replace(" ", "").replace("\n", ""):
                 replynomd('http://i3.asn.im/Nichijou-_tcu1.gif' + modmsg)
